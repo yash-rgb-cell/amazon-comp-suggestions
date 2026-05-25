@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "request_id": "2378d6dc-b0a0-47f6-90f1-50a01c41b785",
+  "timestamp": "2026-05-25T07:24:14Z",
+  "analyst": "lfiqa@listenfirstmedia.com",
+  "inputs": {
+    "title": "How to Rob a Bank",
+    "based_on_ip": false,
+    "ip_type": null,
+    "release_type": "theatrical",
+    "streaming_subtype": null,
+    "season_number": null,
+    "franchise": false,
+    "installment": null,
+    "box_office_range_m": {
+      "min": 7.0,
+      "max": 40.0
+    }
+  },
+  "initial_draft": [
+    {
+      "title": "X",
+      "year": 2024,
+      "distributor": "Y",
+      "opening_weekend_m": 10,
+      "priority_tier": "P2",
+      "flags": []
+    }
+  ],
+  "edits": [],
+  "final_list": [
+    {
+      "title": "X",
+      "year": 2024,
+      "distributor": "Y",
+      "opening_weekend_m": 10,
+      "priority_tier": "P2",
+      "flags": []
+    }
+  ],
+  "total_turns": 0,
+  "duration_seconds": 0,
+  "amazon_feedback": {
+    "received_at": "2026-05-25T07:24:14Z",
+    "response": "partial",
+    "notes": "t",
+    "accepted_titles": [
+      "A"
+    ],
+    "rejected_titles": [
+      "B"
+    ]
+  },
+  "events": [
+    {
+      "at": "2026-05-25T07:24:14Z",
+      "name": "amazon_feedback_logged",
+      "detail": {
+        "response": "partial"
+      }
+    }
+  ]
+}
