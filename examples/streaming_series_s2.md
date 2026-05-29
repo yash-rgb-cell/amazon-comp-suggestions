@@ -1,14 +1,14 @@
-# Example: streaming series Season 2 — "Reservation Dogs S2" (illustrative)
+# Example: streaming series Season 2 — "Shrinking S2" (illustrative)
 
 A walkthrough showing how the streaming-series flow and the season-number rule work. Real series with realistic comp picks.
 
 ## Intake transcript
 
-**Analyst:** "Reservation Dogs S2 — Amazon wants comps"
+**Analyst:** "Shrinking S2 — Amazon wants comps"
 
 **Bot:** *(disambiguator returns a single match — clean)*
 
-**Bot:** Is *Reservation Dogs* based on pre-existing IP?
+**Bot:** Is *Shrinking* based on pre-existing IP?
 > [Yes] [No]
 
 **Analyst:** No
@@ -27,7 +27,7 @@ A walkthrough showing how the streaming-series flow and the season-number rule w
 **Analyst:** "2"
 
 **Bot:** Summary:
-> • Title: Reservation Dogs
+> • Title: Shrinking
 > • IP-based? No
 > • Release type: Streaming, Series
 > • Comping: Season 2
@@ -44,9 +44,9 @@ A walkthrough showing how the streaming-series flow and the season-number rule w
 
 ## Candidate generation (illustrative)
 
-Creators: Sterlin Harjo, Taika Waititi → P1 small set (Harjo has limited TV; Waititi has more).
+Creators: Bill Lawrence, Brett Goldstein, Jason Segel → P1 modest set (Lawrence has Ted Lasso and Scrubs; Goldstein limited).
 
-Top-3 cast: D'Pharaoh Woon-A-Tai, Devery Jacobs, Lane Factor → P2 modest.
+Top-3 cast: Jason Segel, Harrison Ford, Jessica Williams → P2 modest set.
 
 P3 /discover: Comedy genre (TMDb code 35) for TV, 2021-05 to 2026-05.
 
@@ -67,11 +67,11 @@ Survivors (illustrative): 12 candidates, including Atlanta (flagged).
 |---|---|---|---|---|---|
 | 1 | The Bear S2 | 2023 | Hulu | P3 | — |
 | 2 | Severance S2 | 2025 | Apple TV+ | P3 | — |
-| 3 | Reservation Dogs S2 (input — excluded) | — | — | — | — |
-| 4 | What We Do in the Shadows S2 | 2020 | Hulu | P2 (Waititi/Clement) | exceeds ideal range (3-5y) |
+| 3 | Shrinking S2 (input — excluded) | — | — | — | — |
+| 4 | What We Do in the Shadows S2 | 2020 | Hulu | P3 | exceeds ideal range (3-5y) |
 | 5 | Atlanta S2 | 2018 | FX | P3 | linear/network outlier |
 
-Picks reduced to 4 unflagged where possible. *What We Do in the Shadows S2* is borderline (5y old, has director-DNA via Waititi). *Atlanta S2* requires a linear caveat.
+Picks reduced to 4 unflagged where possible. *What We Do in the Shadows S2* is borderline (5y old, broad comedy match). *Atlanta S2* requires a linear caveat.
 
 Realistic final pick (4 titles, 1 flagged):
 
@@ -100,7 +100,7 @@ Ideas ranked by recency (Season 2 comps):
 
 ## Refinement (analyst tweaks)
 
-**Analyst:** "Swap What We Do in the Shadows for Reservation Dogs S2 itself — wait, that's the input. Try Atlanta S2 instead."
+**Analyst:** "Swap What We Do in the Shadows for Shrinking S2 itself — wait, that's the input. Try Atlanta S2 instead."
 
 **Bot:** *(handles "replace": runs disambiguator on "Atlanta", finds the series cleanly, runs rule engine on it as a single candidate)*
 

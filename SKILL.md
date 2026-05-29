@@ -24,16 +24,17 @@ The skill is a strict 8-state pipeline. Each state has clear inputs, outputs, tr
 
 | State | Name | Owner | What it does |
 |---|---|---|---|
-| 1 | Intake | `skills/intake/SKILL.md` | 7-question conversational tree, validated, with branching |
-| 2 | Candidate Generation | `skills/candidate_generation/SKILL.md` | Build P1/P2/P3 TMDb pools in parallel |
-| 3 | Rule Filtering | `skills/rule_filtering/SKILL.md` | Apply 6 hard drops + 3 soft tags in order |
-| 4 | Ranking + Draft | `skills/ranking/SKILL.md` + `skills/output_formatter/SKILL.md` | Sort, pick top 4-7 with LLM judgment, render message |
-| 5 | Refinement Loop | `skills/refinement_loop/SKILL.md` | Multi-turn edits — correction / add / remove / replace / reorder / finalize |
-| 6 | Failure | `skills/refinement_loop/SKILL.md` (failure mode) | Honest report + concrete relaxation options |
-| 7 | Finalize + Log | `skills/feedback_log/SKILL.md` | Show clean output, write JSON log |
-| 8 | Post-Delivery Feedback | `skills/feedback_log/SKILL.md` | Re-entry: append Amazon's response to existing log entry |
+| 1 | Intake | `skills/intake/README.md` | 7-question conversational tree, validated, with branching |
+| 2 | Candidate Generation | `skills/candidate_generation/README.md` | Build P1/P2/P3 TMDb pools in parallel |
+| 3 | Rule Filtering | `skills/rule_filtering/README.md` | Apply 6 hard drops + 3 soft tags in order |
+| 4 | Ranking + Draft | `skills/ranking/README.md` + `skills/output_formatter/README.md` | Sort, pick top 4-7 with LLM judgment, render message |
+| 5 | Refinement Loop | `skills/refinement_loop/README.md` | Multi-turn edits — correction / add / remove / replace / reorder / finalize |
+| 6 | Failure | `skills/refinement_loop/README.md` (failure mode) | Honest report + concrete relaxation options |
+| 7 | Finalize + Log | `skills/feedback_log/README.md` | Show clean output, write JSON log |
+| 8 | Post-Delivery Feedback | `skills/feedback_log/README.md` | Re-entry: append Amazon's response to existing log entry |
+| 0 | Health check + (optional) fallback | `skills/websearch_fallback/README.md` | Runs *before* Stage 1. Probes TMDb + BOM; activates degraded WebSearch mode if TMDb is unreachable |
 
-Read the sub-skill SKILL.md whose state you are entering. Each one contains the exact prompts, validation, and transition rules.
+Read the sub-skill README.md whose state you are entering. Each one contains the exact prompts, validation, and transition rules.
 
 ## Hard rules (enforced everywhere)
 
@@ -66,20 +67,21 @@ No other secrets required. Box Office Mojo is scraped (no API), with a 2-second 
 
 ## Layout — sub-skills and their roles
 
-The skill is composed of single-responsibility sub-skills under `skills/`. Each has its own `SKILL.md` with the deeper spec; read whichever ones are relevant for the state you're entering.
+The skill is composed of single-responsibility sub-skills under `skills/`. Each has its own `README.md` with the deeper spec; read whichever ones are relevant for the state you're entering.
 
 | Sub-skill folder | Role |
 |---|---|
-| `skills/intake/SKILL.md` | **Entry-point conversational flow.** 7 questions, branching by release type. |
-| `skills/tmdb_client/SKILL.md` | TMDb API wrapper — search, person credits, discover, watch providers, keywords. SQLite cache. |
-| `skills/box_office_scraper/SKILL.md` | Box Office Mojo opening-weekend scraper. Polite, cached, fragile-by-design. |
-| `skills/candidate_generation/SKILL.md` | Builds P1 (director), P2 (top-3 cast), P3 (genre /discover) pools. Dedupes, attaches metadata. |
-| `skills/rule_filtering/SKILL.md` | Applies the 6 hard drops + 3 soft tags in fixed order. |
-| `skills/ranking/SKILL.md` | Sorts surviving candidates by P1>P2>P3 then recency; picks 4-7 with LLM judgment. |
-| `skills/output_formatter/SKILL.md` | Renders the standard Slack-style message (theatrical OR streaming-film OR streaming-series variants). |
-| `skills/refinement_loop/SKILL.md` | The multi-turn edit loop. Intent classification (6 classes) and per-intent handlers. |
-| `skills/disambiguation/SKILL.md` | When a TMDb search returns >1 match, asks the analyst — never guesses. |
-| `skills/feedback_log/SKILL.md` | JSON log writer (State 7) and updater (State 8). One file per request, monthly folders. |
+| `skills/intake/README.md` | **Entry-point conversational flow.** 7 questions, branching by release type. |
+| `skills/tmdb_client/README.md` | TMDb API wrapper — search, person credits, discover, watch providers, keywords. SQLite cache. |
+| `skills/box_office_scraper/README.md` | Box Office Mojo opening-weekend scraper. Polite, cached, fragile-by-design. |
+| `skills/candidate_generation/README.md` | Builds P1 (director), P2 (top-3 cast), P3 (genre /discover) pools. Dedupes, attaches metadata. |
+| `skills/rule_filtering/README.md` | Applies the 6 hard drops + 3 soft tags in fixed order. |
+| `skills/ranking/README.md` | Sorts surviving candidates by P1>P2>P3 then recency; picks 4-7 with LLM judgment. |
+| `skills/output_formatter/README.md` | Renders the standard Slack-style message (theatrical OR streaming-film OR streaming-series variants). |
+| `skills/refinement_loop/README.md` | The multi-turn edit loop. Intent classification (6 classes) and per-intent handlers. |
+| `skills/disambiguation/README.md` | When a TMDb search returns >1 match, asks the analyst — never guesses. |
+| `skills/feedback_log/README.md` | JSON log writer (State 7) and updater (State 8). One file per request, monthly folders. |
+| `skills/websearch_fallback/README.md` | Degraded-mode workflow Claude follows when TMDb is unreachable. Same pipeline, same template, WebSearch instead of TMDb. |
 
 ## Scripts — what does the deterministic work
 
@@ -94,8 +96,11 @@ Each script under `scripts/` is callable from the command line for isolated test
 | `scripts/disambiguator.py` | TMDb search + multi-match handler | `python -m scripts.disambiguator "the grey"` |
 | `scripts/output_formatter.py` | Render the final message | `python -m scripts.output_formatter --in final.json` |
 | `scripts/feedback_logger.py` | Write/update the JSON log | `python -m scripts.feedback_logger init …` |
+| `scripts/health_check.py` | Probe TMDb + BOM reachability at session start | `python -m scripts.health_check` |
 
 ## Canonical execution order
+
+**Stage 0** — at the very start of every session, run `python -m scripts.health_check --quiet`. Exit code 0 → normal flow; exit code 1 → activate `skills/websearch_fallback/README.md` and tell the analyst this is a degraded session; exit code 2 → State 6 (no data source available).
 
 After the analyst has answered the 7 intake questions:
 

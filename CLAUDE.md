@@ -6,9 +6,9 @@ This document is loaded automatically whenever Claude is working in this skill's
 
 ## Rule #1 — Always run the state machine. Never improvise.
 
-The skill is an 8-state pipeline (see `SKILL.md` for the table). When the user activates the skill, the entry point is **State 1 (Intake)** — owned by `skills/intake/SKILL.md`. Do not generate candidates, do not draft messages, do not call any TMDb endpoint until intake is complete and the analyst has confirmed the summary.
+The skill is an 8-state pipeline (see `SKILL.md` for the table). When the user activates the skill, the entry point is **State 1 (Intake)** — owned by `skills/intake/README.md`. Do not generate candidates, do not draft messages, do not call any TMDb endpoint until intake is complete and the analyst has confirmed the summary.
 
-The only valid skip is when the user re-enters at **State 8** ("log feedback for [title]") — that bypasses 1-7 entirely and goes straight to `skills/feedback_log/SKILL.md`.
+The only valid skip is when the user re-enters at **State 8** ("log feedback for [title]") — that bypasses 1-7 entirely and goes straight to `skills/feedback_log/README.md`.
 
 ---
 
@@ -16,7 +16,7 @@ The only valid skip is when the user re-enters at **State 8** ("log feedback for
 
 This is the most important behavioral rule and it appears in three places:
 
-1. **Disambiguation in intake:** if the analyst's title matches more than one TMDb entry, use `skills/disambiguation/SKILL.md` to present the options with full context (year + type + director + distributor + OW if known). Sort by **recency**, not popularity. Never auto-pick the highest-vote result.
+1. **Disambiguation in intake:** if the analyst's title matches more than one TMDb entry, use `skills/disambiguation/README.md` to present the options with full context (year + type + director + distributor + OW if known). Sort by **recency**, not popularity. Never auto-pick the highest-vote result.
 2. **Disambiguation in refinement:** same rule applies when the analyst says "add the grey" — multiple matches → present, ask, wait.
 3. **Rule violations during refinement:** when the analyst tries to add a title that fails a hard rule (wrong type, out-of-range OW, unreleased, etc.), surface the violation and offer concrete options (skip / add anyway with a flag / abandon). Never silently break a rule.
 
@@ -53,7 +53,7 @@ The analyst-facing surface should stay tight:
 
 ## Rule #5 — Validate every analyst input
 
-Spec lives in `skills/intake/SKILL.md`. Reject silently-broken inputs at the source:
+Spec lives in `skills/intake/README.md`. Reject silently-broken inputs at the source:
 
 - Empty title → re-ask.
 - Non-positive numbers (box office, season, installment) → re-ask with the reason.
@@ -91,6 +91,24 @@ The analyst picks the relaxation. Then re-run State 2 or State 3 with the new pa
 ## Rule #8 — Hard rule of last resort
 
 If the analyst overrides a hard rule (e.g. "add it anyway as a pre-release reference"), the resulting list still must contain **4-7 titles total** and the override must be visible in the message footnote. The feedback log records the override on that turn so we can audit later.
+
+---
+
+## Rule #9 — Run the health check first. Fall back to WebSearch if TMDb is down.
+
+**At the start of every session**, before transitioning into intake's first question, run:
+
+```bash
+python -m scripts.health_check --quiet
+```
+
+- Exit code **0** → TMDb is reachable; run the normal pipeline.
+- Exit code **1** → TMDb is unreachable but WebSearch is available → activate `skills/websearch_fallback/README.md`. Tell the analyst at the top of the session: *"Heads up — TMDb isn't reachable right now, so I'm using web search as a fallback. Results may be less comprehensive than usual."* Set `payload["mode"] = "websearch_fallback"` in the feedback log.
+- Exit code **2** → no data source available → State 6, surface the error and stop.
+
+The fallback uses the same intake questions, the same rules, the same output template, and the same feedback log schema — only the data-source layer changes. Every "unverified" tag from the fallback shows up in the output footnote so the analyst can spot-check.
+
+Do not silently downgrade in the middle of a session. If TMDb was up at session start and dies during the run, surface the failure and ask the analyst whether to switch modes (rather than mixing data sources in one log entry).
 
 ---
 

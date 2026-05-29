@@ -30,7 +30,7 @@ tmdb = TMDbClient()  # reads TMDB_API_KEY from env
 
 # search
 tmdb.search_movie("How to Rob a Bank")
-tmdb.search_tv("Reservation Dogs")
+tmdb.search_tv("Shrinking")
 tmdb.search_multi("the grey")    # mixed movies + tv + persons (we filter)
 
 # details

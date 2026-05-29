@@ -49,7 +49,7 @@ analyst: "update fall guy to $27.7"
 analyst: "add the grey"
 ```
 
-1. Call `disambiguator.disambiguate(tmdb, "the grey")`. If multiple matches → hand off to `skills/disambiguation/SKILL.md`. **Do not guess.**
+1. Call `disambiguator.disambiguate(tmdb, "the grey")`. If multiple matches → hand off to `skills/disambiguation/README.md`. **Do not guess.**
 2. Run that single candidate through `rule_engine.apply([cand], intake)`.
 3. If it passes all rules → add to the list, re-render.
 4. If it fails a hard rule → surface the violation and offer two paths:

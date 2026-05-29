@@ -50,7 +50,7 @@ Sure thing — ideas below! Put together an initial list based on what's publicl
 
 Ideas ranked by recency (Season 2 comps):
 - The Bear S2 (2023, Hulu)
-- Reservation Dogs S2 (2022, Hulu)
+- Shrinking S2 (2024, Apple TV+)
 - Severance S2 (2025, Apple TV+)
 - Slow Horses S2 (2022, Apple TV+)
 ```

@@ -23,7 +23,7 @@ Use `AskUserQuestion` for each step. Prefer multiple-choice buttons over free-te
 
 Use a free-text follow-up: "What title is Amazon asking for comps on?" If the analyst answers empty or whitespace-only, re-ask: "Need a title to work from — what's the launch?"
 
-After the analyst gives a title, immediately call `scripts/disambiguator.py` (or the `disambiguate(...)` Python helper) to look it up. If multiple TMDb matches come back, hand off to `skills/disambiguation/SKILL.md` before continuing intake.
+After the analyst gives a title, immediately call `scripts/disambiguator.py` (or the `disambiguate(...)` Python helper) to look it up. If multiple TMDb matches come back, hand off to `skills/disambiguation/README.md` before continuing intake.
 
 ### Q2. Based on pre-existing IP? — Yes / No buttons
 
